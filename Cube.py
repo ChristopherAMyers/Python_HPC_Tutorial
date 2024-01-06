@@ -8,46 +8,6 @@ import math
 import numpy as np
 import numba
 
-def _get_trimmed_axis(axis_mins, cutoff, uniq):
-    size = len(axis_mins)
-
-    for n in range(size//2):
-        if axis_mins[n] > cutoff:
-            break
-    left_idx = n
-
-    for n in range(size-1, size//2, -1):
-        if axis_mins[n] > cutoff:
-            break
-    right_idx = n
-
-    return uniq[left_idx], uniq[right_idx]
-
-def _get_trimmed_idx(data_3d, dim, cutoff):
-    size = data_3d.shape[dim]
-    left_idx = 0
-    right_idx = size-1
-    for n in range(0, size//2):
-        if dim == 0:   slice_data = data_3d[n, :, :]
-        elif dim == 1: slice_data = data_3d[:, n, :]
-        elif dim == 2: slice_data = data_3d[:, :, n]
-
-        if np.max(np.abs(slice_data)) > cutoff:
-            left_idx = max(0, n-1)
-            break
-
-    for n in range(size-1, size//2, -1):
-        if dim == 0:   slice_data = data_3d[n, :, :]
-        elif dim == 1: slice_data = data_3d[:, n, :]
-        elif dim == 2: slice_data = data_3d[:, :, n]
-
-        if np.max(np.abs(slice_data)) > cutoff:
-            right_idx = min(size, n+1)
-            break
-    
-    return left_idx, right_idx
-
-
 class CubeData():
     #   original cube file reader from 
     #   Aleksey A. Kocherzhenko, January 7, 2016
@@ -179,6 +139,8 @@ class CubeData():
             self.cube_data[key-1] = cube[key]
 
         del cube
+
+        self.n_points = len(self.coords)
 
         print("Done")
 
