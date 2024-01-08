@@ -5,3 +5,4 @@ yld_data/monomer_100_wCh_trans1.fcub
 *.pyc
 Presentation
 .vscode
+swig_example
