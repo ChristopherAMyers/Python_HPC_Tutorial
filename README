@@ -1,4 +1,0 @@
-mamba install python=3.10
-mamba install numpy
-mamba install numba
-mamba install multiprocess
